@@ -1,0 +1,12 @@
+export { SlideShell } from "./SlideShell";
+export { Cover } from "./Cover";
+export { Problem3Col } from "./Problem3Col";
+export { OKRBoard } from "./OKRBoard";
+export { SWOTGrid } from "./SWOTGrid";
+export { Roadmap } from "./Roadmap";
+export { CompetitiveMatrix } from "./CompetitiveMatrix";
+export { BigQuote } from "./BigQuote";
+export { BeforeAfter } from "./BeforeAfter";
+export { ValueProp } from "./ValueProp";
+export { CustomerJourney } from "./CustomerJourney";
+export { WeeklyStatus } from "./WeeklyStatus";

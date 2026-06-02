@@ -1,0 +1,46 @@
+/* Auto-generated from brand.yaml — DO NOT EDIT BY HAND. */
+:root {
+  /* Colour — main palette */
+  --th-color-primary: #E61B25;
+  --th-color-black: #000000;
+  --th-color-green: #13A538;
+  --th-color-background: #FFFFFF;
+
+  /* Colour — accents (use sparingly) */
+  --th-color-blue: #0056A4;
+  --th-color-red-light: #E9787E;
+
+  /* Colour — neutrals */
+  --th-color-gray-1: #969696;
+  --th-color-gray-2: #E6E6E6;
+  --th-color-gray-3: #F0F0F0;
+
+  /* Status colours */
+  --th-color-status-done: #13A538;
+  --th-color-status-in-progress: #000000;
+  --th-color-status-at-risk: #E9787E;
+  --th-color-status-blocked: #E61B25;
+  --th-color-status-planned: #969696;
+
+  /* Typography */
+  --th-font-heading: "Raleway SemiBold", Arial, sans-serif;
+  --th-font-body: "Raleway", Arial, sans-serif;
+  --th-font-light: "Raleway Light", Arial, sans-serif;
+
+  /* Font sizes (px) */
+  --th-text-title: 36px;
+  --th-text-h1: 28px;
+  --th-text-h2: 20px;
+  --th-text-section: 12px;
+  --th-text-body: 14px;
+  --th-text-supporting: 12px;
+  --th-text-caption: 10px;
+
+  /* Spacing */
+  --th-radius-sm: 4px;
+  --th-radius-md: 8px;
+  --th-radius-lg: 12px;
+}
+
+body { font-family: var(--th-font-body); color: var(--th-color-black); }
+h1, h2, h3, h4, h5 { font-family: var(--th-font-heading); }
