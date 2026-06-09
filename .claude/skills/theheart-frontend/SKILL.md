@@ -117,13 +117,62 @@ in-progress badge breaks the guideline.
 - Use Tailwind utilities: `text-th-h1`, `font-heading`, `font-body`,
   `font-light`. Never hardcode `text-2xl` or `text-[28px]`.
 
-### Punctuation in copy
+### Voice & copy
 
+The Heart writes like a VC / venture-builder memo — operator-to-operator, not marketing.
+
+**Tone**
+- Confident, concrete, sober. No exclamation marks, no hype words ("game-changing", "revolutionary").
+- Energy comes from the red and the photography, not the copy.
+- Claims are backed by a number wherever possible: *"Self-checkout 4× faster than competition"*, *"€4.2B uncaptured loyalty revenue in CEE"*.
+
+**Person & casing**
+- Sentence case for all headlines and body text.
+- UPPERCASE only for small structural labels: section eyebrow (`PROBLEM`, `OKR`), status pills (`ON TRACK`), badges.
+- Never set a full headline in uppercase.
+- Third person about the venture/company: *"ScanPay does X"*. First-person plural (`we`) in framing slides only: *"Where **we** win"*. Avoid chatty second person.
+
+**Numbers**
+- A stat is the hero of most content slides — big red number, short caption.
+- One big figure per moment. Resist stacking many small numbers.
+
+**Punctuation**
 - Em-dash `—` is **banned**. Use a period or comma.
 - En-dash `–` is allowed **only** in numeric ranges (`2–4 weeks`).
 - Ellipsis `…` is banned.
 - No tricolons ("Fast. Simple. Reliable.").
 - No rhetorical questions in headlines.
+- No emoji — use the Lucide icon set instead.
+
+**Bilingual context**
+- The brand guideline source is Polish ("Wytyczne", "trójkąty"). Output is English unless asked otherwise.
+- Expect Polish proper nouns and occasional Polish terms in source material — keep them as-is.
+
+**Representative copy register**
+> *"Dining kiosk in your mobile." · "Become the default payment method for Polish QSRs by end of Q4." · "Banks spend 14 months building what we ship in 4 weeks."*
+
+### Decoration motifs
+
+The brand has two recurring decorative elements. Do not invent other motifs.
+
+1. **Polygon triangle network** (`trojkaty.png`) — the faint scattered triangles anchored to slide corners. Documented fully in the "Decorative triangle artwork" section below.
+2. **Right-angle red triangle** — a solid `#E61B25` right-triangle clipped to a corner (typically bottom-right of a Cover slide). This is a *different* element from the triangle network — it's a bold geometric accent, not a texture.
+
+**Banned decoration patterns:**
+- Gradients used as backgrounds or decorative fills
+- Glow effects on any element
+- Drop-shadowed content cards (white card + 1px border is the default; shadow is an exception requiring justification)
+- Rounded-corner boxes with a coloured left border (this is a generic UI pattern, not The Heart brand)
+- Any decorative shape that isn't the triangle network or the red right-angle triangle
+
+### Motion (for interactive / animated surfaces)
+
+The brand is rooted in static decks — motion is minimal and purposeful.
+
+- **Allowed:** tasteful fade-ins and slide-in-from-below on entrance. Duration 200–350ms, ease-out.
+- **Not allowed:** bounce, spring, infinite loops, attention-seeking animations.
+- **Hover/press states:** opacity shift (e.g. `opacity: 0.8` on hover) or a step darker (`brightness(0.92)`). Never a colour-shift on hover.
+- Reduced-motion: always respect `prefers-reduced-motion: reduce`.
 
 ---
 
@@ -656,6 +705,11 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] Dense data slides (`decorations={false}`) don't carry the triangle artwork.
 - [ ] Triangle artwork on white slides uses `theme="light-bg"` (`filter:brightness(0)`) — never raw low opacity on white without the filter.
 - [ ] No four consecutive slides with triangles in the same corner.
+- [ ] Copy is sentence case — no ALL-CAPS headlines.
+- [ ] No emoji anywhere — Lucide icons instead.
+- [ ] No hype words, no exclamation marks, no tricolons.
+- [ ] Decoration is only the triangle network or the red right-angle triangle — no gradients, glows, or coloured-left-border boxes.
+- [ ] Hover/press states use opacity or brightness shift — never a colour-shift.
 - [ ] Any 2×2 matrix (`SWOTGrid`, etc.) has axis labels and semantic tint backgrounds.
 - [ ] Ghost letter watermarks added to quadrant cards where appropriate.
 - [ ] Status in legend/educational context uses card format, not just pills.
