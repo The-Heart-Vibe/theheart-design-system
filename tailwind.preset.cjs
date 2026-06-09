@@ -25,7 +25,7 @@ module.exports = {
       },
       "fontFamily": {
         "heading": [
-          "Raleway SemiBold",
+          "Raleway",
           "Arial",
           "sans-serif"
         ],
@@ -35,7 +35,7 @@ module.exports = {
           "sans-serif"
         ],
         "light": [
-          "Raleway Light",
+          "Raleway",
           "Arial",
           "sans-serif"
         ]

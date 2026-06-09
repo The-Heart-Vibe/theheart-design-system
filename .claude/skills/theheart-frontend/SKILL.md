@@ -157,6 +157,7 @@ chrome inside the body.
 |---|---|
 | `SlideShell` | Standard chrome: vertical red bar left, eyebrow, decorative corner, footer + page number. |
 | `Cover` | First slide. Signature red triangle bottom-right. |
+| `SectionDivider` | Transition slide between major sections. Full-bleed office photo with dark overlay, white headline, optional red accent word, footer. |
 | `Problem3Col` | Problem framed as 3 stats with supporting text. |
 | `OKRBoard` | Single objective + up to 3 KRs with current/target + status pill. |
 | `SWOTGrid` | 4-quadrant SWOT analysis. |
@@ -195,11 +196,82 @@ names or any alias from `icon-manifest.json`.
 
 ---
 
+## Office photos — context-based selection
+
+The design system ships 15 branded office photos in `src/assets/office/`.
+A TypeScript catalog (`src/assets/office-catalog.ts`) tags each photo with
+semantic contexts, mood, and prominence so the right image is picked automatically.
+
+### Setup — copy photos into the repo
+
+Run once from the repo root (requires `~/The Heart zm/` on the local machine):
+
+```bash
+bash scripts/copy-office-photos.sh
+git add src/assets/office && git commit -m "feat: add office photo assets"
+```
+
+### PhotoContext values
+
+| Context | Use when the section introduces... |
+|---|---|
+| `"brand-identity"` | Company overview, about us, corporate identity |
+| `"collaboration"` | Team, partnerships, how we work together |
+| `"culture"` | Values, team spirit, company DNA |
+| `"focus"` | Deep work, technology, research, innovation |
+| `"social"` | Community, events, casual moments |
+| `"dramatic"` | Investment memo dividers, high-stakes announcements |
+| `"energy"` | Vision, ambition, call to action, mission |
+| `"fun"` | Perks, benefits, creative sections |
+| `"workspace"` | Operations, office environment, everyday work |
+
+### Using SectionDivider
+
+```tsx
+// Context-aware — picks the best hero photo automatically
+<SectionDivider
+  context="dramatic"
+  eyebrow="INVESTMENT MEMO · MAY 2026 · CONFIDENTIAL"
+  title="Building Poland's leading"
+  titleAccent="deep tech"
+  titleSuffix="investment platform"
+  subtitle="Poland's first listed deep tech venture builder and VC platform."
+/>
+
+// Rotate photos within the same context (consecutive dividers)
+<SectionDivider context="culture" photoIndex={0} title="Our team" titleAccent="makes the difference" />
+<SectionDivider context="culture" photoIndex={1} title="Our values" titleAccent="drive everything" />
+
+// Fully explicit — absolute path or public URL
+<SectionDivider photo="/assets/office/lounge-night-city.jpg" title="Section title" />
+```
+
+### Photo selection logic
+
+`selectPhoto(context, index, preferHero)` in `office-catalog.ts`:
+1. Filter `OFFICE_PHOTOS` to those whose `contexts` includes the key.
+2. If `preferHero = true` (default), narrow to `prominence === "hero"`.
+3. Use `index % candidates.length` to cycle through variety.
+4. Falls back to all photos if no match.
+
+### Hero photos at a glance
+
+| Photo | Context(s) | Character |
+|---|---|---|
+| `reception-desk.jpg` | brand-identity | Strong brand mark, city view, daylight |
+| `do-something-great.jpg` | energy | High-contrast neon, motivational |
+| `heartcore-team-lounge.jpg` | culture, energy | Neon sign, depth, cinematic |
+| `lounge-neon-city.jpg` | brand-identity, dramatic | The Heart neon + Warsaw panorama |
+| `lounge-night-city.jpg` | dramatic | Night cityscape, maximum atmosphere |
+
+---
+
 ## Decision tree — which pattern fits the brief?
 
 | Brief | Pattern |
 |---|---|
 | First slide, title + tagline | `Cover` |
+| Transition between major deck sections | `SectionDivider` |
 | State a single bold claim | `BigQuote` |
 | Three stats / 3 root causes | `Problem3Col` |
 | Quarterly OKR review | `OKRBoard` |
@@ -257,3 +329,4 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] If a status appears, it uses one of the five fixed values.
 - [ ] Logo is rendered via `<Logo/>`, not as a free `<img>`.
 - [ ] If the screen mirrors a slide pattern, it wraps in `SlideShell`.
+- [ ] Photo dividers use `SectionDivider` with a `context` or explicit `photo` prop.

@@ -1,4 +1,8 @@
 /* Auto-generated from brand.yaml — DO NOT EDIT BY HAND. */
+
+/* Raleway — 3 weights; weight differentiation via font-weight utilities in components */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&display=swap');
+
 :root {
   /* Colour — main palette */
   --th-color-primary: #E61B25;
@@ -22,10 +26,10 @@
   --th-color-status-blocked: #E61B25;
   --th-color-status-planned: #969696;
 
-  /* Typography */
-  --th-font-heading: "Raleway SemiBold", Arial, sans-serif;
+  /* Typography — all three use "Raleway"; weight is set via font-weight utilities */
+  --th-font-heading: "Raleway", Arial, sans-serif;
   --th-font-body: "Raleway", Arial, sans-serif;
-  --th-font-light: "Raleway Light", Arial, sans-serif;
+  --th-font-light: "Raleway", Arial, sans-serif;
 
   /* Font sizes (px) */
   --th-text-title: 36px;

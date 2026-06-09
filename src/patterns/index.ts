@@ -1,5 +1,6 @@
 export { SlideShell } from "./SlideShell";
 export { Cover } from "./Cover";
+export { SectionDivider } from "./SectionDivider";
 export { Problem3Col } from "./Problem3Col";
 export { OKRBoard } from "./OKRBoard";
 export { SWOTGrid } from "./SWOTGrid";
