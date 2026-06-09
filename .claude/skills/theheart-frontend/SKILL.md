@@ -607,6 +607,7 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] Decorative triangles use `<DecorativeCorner />` (or the CDN URL) — never ad-hoc shapes.
 - [ ] Triangle position chosen based on slide layout — not defaulted to top-right blindly.
 - [ ] Dense data slides (`decorations={false}`) don't carry the triangle artwork.
+- [ ] Triangle artwork on white slides uses `theme="light-bg"` (mix-blend-mode:multiply) — never raw low opacity on white without multiply.
 - [ ] No four consecutive slides with triangles in the same corner.
 - [ ] Any 2×2 matrix (`SWOTGrid`, etc.) has axis labels and semantic tint backgrounds.
 - [ ] Ghost letter watermarks added to quadrant cards where appropriate.

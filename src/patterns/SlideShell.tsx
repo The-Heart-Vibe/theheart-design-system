@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import { BrandFooter } from "../components/BrandFooter";
-import { DecorativeCorner, DecorativeCornerPosition } from "../components/DecorativeCorner";
+import { DecorativeCorner, DecorativeCornerPosition, DecorativeCornerTheme } from "../components/DecorativeCorner";
 
 export interface SlideShellProps {
   children: ReactNode;
@@ -13,17 +13,14 @@ export interface SlideShellProps {
   decorationPosition?: DecorativeCornerPosition;
   decorationOpacity?:  number;
   decorationSize?:     number;
+  /**
+   * "light-bg" (default) — white slides. Uses mix-blend-mode:multiply so
+   * the near-white PNG artwork stays visible against white backgrounds.
+   * "dark-bg" — photo overlays, dark slides. No blend mode.
+   */
+  decorationTheme?:    DecorativeCornerTheme;
 }
 
-/** Standard content-slide chrome:
- *  - thin vertical red bar on the left
- *  - section label eyebrow top-left
- *  - decorative triangle artwork (trojkaty.png) — position, opacity, and size are
- *    all caller-controlled so the LLM can place it where it makes visual sense
- *  - bottom red accent bar + brand footer with copyright + page number
- *
- *  Mirrors slide 11 of blank.pptx (the canonical guideline slide).
- */
 export function SlideShell({
   children,
   pageNumber,
@@ -32,8 +29,9 @@ export function SlideShell({
   copyright,
   decorations        = true,
   decorationPosition = "top-right",
-  decorationOpacity  = 0.35,
+  decorationOpacity,
   decorationSize     = 260,
+  decorationTheme    = "light-bg",
 }: SlideShellProps) {
   return (
     <div className="relative aspect-[16/9] w-full overflow-hidden bg-white p-12 font-body text-th-black">
@@ -51,6 +49,7 @@ export function SlideShell({
           position={decorationPosition}
           size={decorationSize}
           opacity={decorationOpacity}
+          theme={decorationTheme}
         />
       )}
 
