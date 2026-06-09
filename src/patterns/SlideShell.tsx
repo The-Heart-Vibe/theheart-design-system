@@ -1,22 +1,25 @@
 import { ReactNode } from "react";
 
 import { BrandFooter } from "../components/BrandFooter";
-import { DecorativeCorner } from "../components/DecorativeCorner";
+import { DecorativeCorner, DecorativeCornerPosition } from "../components/DecorativeCorner";
 
 export interface SlideShellProps {
   children: ReactNode;
-  pageNumber?:    number;
-  totalPages?:    number;
-  sectionLabel?:  string;
-  copyright?:     string;
-  decorations?:   boolean;     // toggle the abstract corner artwork
+  pageNumber?:         number;
+  totalPages?:         number;
+  sectionLabel?:       string;
+  copyright?:          string;
+  decorations?:        boolean;
+  decorationPosition?: DecorativeCornerPosition;
+  decorationOpacity?:  number;
+  decorationSize?:     number;
 }
 
 /** Standard content-slide chrome:
  *  - thin vertical red bar on the left
  *  - section label eyebrow top-left
- *  - decorative grey corner top-right
- *  - red icon corner badge
+ *  - decorative triangle artwork (trojkaty.png) — position, opacity, and size are
+ *    all caller-controlled so the LLM can place it where it makes visual sense
  *  - bottom red accent bar + brand footer with copyright + page number
  *
  *  Mirrors slide 11 of blank.pptx (the canonical guideline slide).
@@ -27,7 +30,10 @@ export function SlideShell({
   totalPages,
   sectionLabel,
   copyright,
-  decorations = true,
+  decorations        = true,
+  decorationPosition = "top-right",
+  decorationOpacity  = 0.35,
+  decorationSize     = 260,
 }: SlideShellProps) {
   return (
     <div className="relative aspect-[16/9] w-full overflow-hidden bg-white p-12 font-body text-th-black">
@@ -40,7 +46,13 @@ export function SlideShell({
         </div>
       )}
 
-      {decorations && <DecorativeCorner position="top-right" size={260} opacity={0.35} />}
+      {decorations && (
+        <DecorativeCorner
+          position={decorationPosition}
+          size={decorationSize}
+          opacity={decorationOpacity}
+        />
+      )}
 
       <div className="relative h-full pt-6">{children}</div>
 
