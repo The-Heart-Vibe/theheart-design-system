@@ -160,7 +160,7 @@ chrome inside the body.
 | `SectionDivider` | Transition slide between major sections. Full-bleed office photo with dark overlay, white headline, optional red accent word, footer. |
 | `Problem3Col` | Problem framed as 3 stats with supporting text. |
 | `OKRBoard` | Single objective + up to 3 KRs with current/target + status pill. |
-| `SWOTGrid` | 4-quadrant SWOT analysis. |
+| `SWOTGrid` | 4-quadrant SWOT analysis. Each quadrant gets: semantic tint background (S=green, W=red-light, O=blue, T=red), ghost letter watermark at ~15% opacity, icon + title pair, axis labels (HELPFUL/HARMFUL top, INTERNAL/EXTERNAL left rotated). Brand `<Logo variant="icon">` anchors the grid centre. |
 | `Roadmap` | Horizontal timeline of milestones. |
 | `CompetitiveMatrix` | Feature × competitor table. Own column highlighted red. |
 | `BigQuote` | Full-screen quote on red background. |
@@ -422,6 +422,124 @@ These are hard maximums — if content does not fit, split into two slides.
 
 ---
 
+## Visual elevation — making slides feel designed
+
+The default output from a pattern + tokens is functional but flat.
+Elevation is the layer that makes a slide feel intentional.
+Apply these techniques before declaring any pattern done.
+
+### Technique 1 — Ghost letter watermarks
+
+Large single letter (or initial) rendered at 10–18% opacity behind the content area of a quadrant or section.
+Creates depth without adding noise.
+
+```tsx
+// Inside a quadrant card
+<span
+  aria-hidden
+  style={{
+    position: 'absolute', bottom: '-0.1em', right: '0.15em',
+    fontSize: '7rem', fontWeight: 700, lineHeight: 1,
+    color: 'var(--th-color-black)', opacity: 0.12,
+    fontFamily: 'var(--th-font-heading)', userSelect: 'none',
+    pointerEvents: 'none',
+  }}
+>
+  S
+</span>
+```
+
+Use for: `SWOTGrid` quadrants (S/W/O/T), section tabs, any card that represents a named category.
+
+### Technique 2 — Semantic surface tinting
+
+Background colour of a card or region reflects its meaning — not decoration.
+
+| Context | Background token | Border / accent |
+|---|---|---|
+| Positive / Strengths / Done | `bg-green-50` / `rgba(19,165,56,0.06)` | top border `--th-color-green` |
+| Negative / Weaknesses / Blocked | `bg-red-50` / `rgba(230,27,37,0.06)` | top border `--th-color-primary` |
+| Opportunity / In progress | `bg-blue-50` / `rgba(0,86,164,0.06)` | top border `--th-color-blue` |
+| Neutral / Planned | `bg-gray-50` / `rgba(150,150,150,0.06)` | top border `--th-color-gray-1` |
+| Warning / At risk | `bg-red-50` lighter / `rgba(233,120,126,0.08)` | top border `--th-color-red-light` |
+
+Never use semantic tinting just for aesthetics — colour must match meaning.
+
+### Technique 3 — Axis framing for matrices
+
+Any 2×2 or N×M grid must name its axes.
+Axis labels make the analytical intent visible without needing a legend slide.
+
+```tsx
+// Top axis: centred above columns
+<div className="flex justify-around text-th-caption font-heading font-semibold uppercase tracking-widest text-th-gray-1">
+  <span>HELPFUL</span>
+  <span>HARMFUL</span>
+</div>
+
+// Left axis: rotated, centred beside rows
+<div
+  style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+  className="text-th-caption font-heading font-semibold uppercase tracking-widest text-th-gray-1"
+>
+  INTERNAL
+</div>
+```
+
+Use for: `SWOTGrid`, `CompetitiveMatrix`, `BeforeAfter`, any 2-axis layout.
+
+### Technique 4 — Icon anchoring
+
+Every quadrant or section title should pair an icon with the label.
+Icons provide instant scannable orientation — the reader understands the quadrant before reading the text.
+
+```tsx
+<div className="flex items-center gap-2 mb-3">
+  <Icon name="shield-check" size={18} color="var(--th-color-green)" />
+  <span className="font-heading font-semibold text-th-h2 text-th-green">Strengths</span>
+</div>
+```
+
+Use for: all `SWOTGrid` headers, `OKRBoard` KR rows, `WeeklyStatus` workstream rows, `Problem3Col` column headers.
+
+### Technique 5 — Brand focal point at intersections
+
+When a grid has a centre intersection point, place `<Logo variant="icon">` there.
+Creates a focal anchor that ties the slide to the brand without adding a full logotype.
+
+```tsx
+// Centred over the grid intersection (absolute, translate -50% -50%)
+<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10
+                bg-white rounded-full p-1.5 shadow-sm">
+  <Logo variant="icon" theme="color" height={28} />
+</div>
+```
+
+Use for: `SWOTGrid` centre, 2×2 comparison grids.
+
+### Technique 6 — Two-level status display
+
+In educational or legend contexts (not inline status), show status as a **card** not a pill.
+Card format: coloured top border + dot indicator + label + semantic description + hex value.
+
+```
+┌──────────────────────┐  ← top border in status colour
+│  ●  Done             │  ← dot with subtle ring/halo
+│  done · on-track     │  ← semantic description
+│  #13A538             │  ← hex reference
+└──────────────────────┘
+```
+
+Use pills (`<StatusPill>`) for inline table cells and row-level status.
+Use card layout for legend slides, onboarding materials, and design system showcases.
+
+### When NOT to elevate
+
+- Dense tables with 20+ rows — tinting adds visual noise, omit
+- `BigQuote` — already full-bleed, elevation competes with the statement
+- `SectionDivider` — the photo is the atmosphere, extra elevation distracts
+- Slides where the data IS the hero — let numbers breathe on white
+
 ## Decision tree — which pattern fits the brief?
 
 | Brief | Pattern |
@@ -490,3 +608,8 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] Triangle position chosen based on slide layout — not defaulted to top-right blindly.
 - [ ] Dense data slides (`decorations={false}`) don't carry the triangle artwork.
 - [ ] No four consecutive slides with triangles in the same corner.
+- [ ] Any 2×2 matrix (`SWOTGrid`, etc.) has axis labels and semantic tint backgrounds.
+- [ ] Ghost letter watermarks added to quadrant cards where appropriate.
+- [ ] Status in legend/educational context uses card format, not just pills.
+- [ ] Every quadrant or section title has an icon alongside the label.
+- [ ] Slide does not look like a plain table with white cards — elevation applied.
