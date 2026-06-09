@@ -562,6 +562,53 @@ widgets. `KPITile` grids and `StatusPill` rows cover most cases.
 
 ---
 
+## Slide style system — Corp vs Startup
+
+Each pattern supports two independent axes:
+
+| Axis | Values | What changes |
+|---|---|---|
+| **Style** | `corp` / `startup` | Layout, hierarchy, visual character |
+| **Theme** | `light` / `dark` | Surface colour, text, triangle filter, logo |
+
+### Corp style
+
+Clean, structured, investor-grade. Axes labeled (HELPFUL/HARMFUL), tinted quadrant cards,
+centre logo anchor, prose subtitles. Optimised for board presentations and LP updates.
+
+### Startup style
+
+Bolder, more energetic. Large display numbers, progress bars, filled icon chips,
+uppercase labels, tighter spacing, bigger type weight. Optimised for pitch decks
+and founder-facing materials.
+
+### Section number watermarks (Startup only)
+
+In Startup-style section dividers, the section number appears as a giant watermark
+behind the content — creating depth and visual rhythm across the deck:
+
+```html
+<!-- Section number watermark — Startup section divider -->
+<div style="
+  position:absolute; right:40px; top:-30px;
+  font-family:var(--th-font-heading); font-weight:800; font-size:460px; line-height:1;
+  color:var(--th-color-primary); opacity:0.12; pointer-events:none; user-select:none;
+">02</div>
+```
+
+### OKR progress bars (Startup variant)
+
+Startup OKR cards show a percentage fill bar below the metric for at-a-glance progress:
+
+```html
+<div style="margin-top:16px;height:8px;border-radius:999px;
+            background:color-mix(in srgb, var(--th-color-gray-1) 30%, transparent);overflow:hidden;">
+  <div style="height:100%;border-radius:999px;width:65%;background:var(--th-color-status-at-risk);"></div>
+</div>
+```
+
+---
+
 ## Showcase as living spec
 
 `src/examples/Showcase.tsx` in the design-system repo is the canonical
@@ -581,7 +628,7 @@ When in doubt, mirror what Showcase does for a similar shape.
 
 1. **First, compose.** Almost everything reduces to atomic widgets + a
    `SlideShell` or plain Tailwind container.
-2. **Reach for free tokens, never raw colours.** Even when extending,
+2. **Reach for free tokens, never raw colours.** Semantic aliases (`--th-text-muted`, `--th-surface`, `--th-border`, `--th-shadow-md`) are now in `src/tokens/tokens.css` — use them. Even when extending,
    use `var(--th-color-*)` / `bg-th-*` so the result tracks future
    brand updates.
 3. **Don't introduce new fonts, new accent colours, or new bullet
@@ -607,7 +654,7 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] Decorative triangles use `<DecorativeCorner />` (or the CDN URL) — never ad-hoc shapes.
 - [ ] Triangle position chosen based on slide layout — not defaulted to top-right blindly.
 - [ ] Dense data slides (`decorations={false}`) don't carry the triangle artwork.
-- [ ] Triangle artwork on white slides uses `theme="light-bg"` (mix-blend-mode:multiply) — never raw low opacity on white without multiply.
+- [ ] Triangle artwork on white slides uses `theme="light-bg"` (`filter:brightness(0)`) — never raw low opacity on white without the filter.
 - [ ] No four consecutive slides with triangles in the same corner.
 - [ ] Any 2×2 matrix (`SWOTGrid`, etc.) has axis labels and semantic tint backgrounds.
 - [ ] Ghost letter watermarks added to quadrant cards where appropriate.

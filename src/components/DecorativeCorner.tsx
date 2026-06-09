@@ -1,14 +1,16 @@
 /* Decorative polygon triangle network anchored to a slide corner.
- * Uses the canonical branded artwork (trojkaty.png) by default.
+ * Uses the canonical branded artwork (triangles.png / trojkaty.png).
  *
- * IMPORTANT — visibility on white slides:
- * trojkaty.png has near-white triangle lines on a white/transparent background.
- * Without correction this is invisible at low opacity on white slides.
- * Solution: theme="light-bg" applies mix-blend-mode:multiply so the white PNG
- * background vanishes against the slide, leaving the grey triangle lines visible.
- * Use theme="dark-bg" for photo overlays and dark-background slides.
+ * RENDERING APPROACH — filter: brightness(0) / brightness(0) invert(1):
+ * The source PNG has near-white triangle lines on a white/transparent
+ * background. The cleanest way to make them visible regardless of background:
+ *   light-bg: brightness(0)            → collapses all content to solid black;
+ *             opacity then controls the grey level (0.26 ≈ clear grey texture).
+ *   dark-bg:  brightness(0) invert(1)  → solid white lines on dark surfaces;
+ *             higher opacity (0.55) because white on black needs less contrast.
+ * This is simpler and more predictable than mix-blend-mode:multiply.
  */
-import trojkatyPng from "../assets/trojkaty.png";
+import trianglesPng from "../assets/trojkaty.png";
 import { CSSProperties } from "react";
 
 export type DecorativeCornerPosition = "top-right" | "top-left" | "bottom-right" | "bottom-left";
@@ -20,14 +22,14 @@ export interface DecorativeCornerProps {
   size?:     number;
   /** Leave undefined to use the theme-appropriate default opacity. */
   opacity?:  number;
-  /** "image" (default) uses trojkaty.png; "svg" uses an inline SVG approximation. */
+  /** "image" (default) uses triangles PNG; "svg" uses an inline SVG approximation. */
   variant?:  DecorativeCornerVariant;
   /**
-   * "light-bg" (default) — white or light-coloured slides.
-   *   Applies mix-blend-mode:multiply so the near-white PNG background
-   *   disappears and the grey triangle lines remain readable.
-   * "dark-bg" — photo overlays, dark-background slides.
-   *   No blending; light triangles read naturally against dark surfaces.
+   * "light-bg" (default) — white or light slides.
+   *   filter:brightness(0) collapses the near-white PNG to solid black;
+   *   opacity then dials it to a readable grey texture.
+   * "dark-bg" — photo overlays, dark backgrounds.
+   *   filter:brightness(0) invert(1) produces white triangle lines.
    */
   theme?:    DecorativeCornerTheme;
 }
@@ -39,7 +41,7 @@ const POSITION_CLASS: Record<DecorativeCornerPosition, string> = {
   "bottom-left":  "absolute bottom-0 left-0",
 };
 
-// trojkaty.png cluster is in bottom-left; flip to anchor each corner.
+// Source PNG cluster is in the bottom-left; flip to anchor each corner.
 const PNG_TRANSFORM: Record<DecorativeCornerPosition, string> = {
   "top-right":    "scale(-1,-1)",
   "top-left":     "scaleY(-1)",
@@ -54,19 +56,14 @@ const SVG_TRANSFORM: Record<DecorativeCornerPosition, string> = {
   "bottom-left":  "translate(0,0) scale(-1,-1)",
 };
 
-// mix-blend-mode:multiply on a white/transparent PNG against a white slide:
-// white PNG areas become invisible, grey triangle lines remain visible.
-const THEME_BLEND: Record<DecorativeCornerTheme, CSSProperties["mixBlendMode"]> = {
-  "light-bg": "multiply",
-  "dark-bg":  "normal",
+const THEME_FILTER: Record<DecorativeCornerTheme, CSSProperties["filter"]> = {
+  "light-bg": "brightness(0)",           // → solid black rendered as grey via opacity
+  "dark-bg":  "brightness(0) invert(1)", // → white lines on dark backgrounds
 };
 
-// Theme-appropriate default opacity.
-// light-bg: higher because multiply handles the contrast; raw value is perceivable.
-// dark-bg:  lower because the light triangles are already high-contrast on dark.
 const THEME_DEFAULT_OPACITY: Record<DecorativeCornerTheme, number> = {
-  "light-bg": 0.70,
-  "dark-bg":  0.22,
+  "light-bg": 0.26,
+  "dark-bg":  0.55,
 };
 
 export function DecorativeCorner({
@@ -101,16 +98,16 @@ export function DecorativeCorner({
 
   return (
     <img
-      src={trojkatyPng}
+      src={trianglesPng}
       width={size}
       height={size}
       className={POSITION_CLASS[position]}
       style={{
-        opacity:        resolvedOpacity,
-        mixBlendMode:   THEME_BLEND[theme],
-        pointerEvents:  "none",
-        transform:      PNG_TRANSFORM[position],
-        transformOrigin:"center",
+        opacity:         resolvedOpacity,
+        filter:          THEME_FILTER[theme],
+        pointerEvents:   "none",
+        transform:       PNG_TRANSFORM[position],
+        transformOrigin: "center",
       }}
       draggable={false}
       aria-hidden
