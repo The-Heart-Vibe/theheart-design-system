@@ -146,7 +146,7 @@ in-progress badge breaks the guideline.
 | `Divider` | Thin horizontal line. |
 | `SectionLabel` | Small uppercase red eyebrow for section headers. |
 | `BrandFooter` | "The Heart. All rights reserved." + page number. Wired into `SlideShell`. |
-| `DecorativeCorner` | Branded polygon triangle network for slide corners. Default `variant="image"` uses `trojkaty.png`; `variant="svg"` for inline SVG fallback. |
+| `DecorativeCorner` | Branded polygon triangle network for slide corners. Default `variant="image"` uses `trojkaty.png`; `variant="svg"` for inline SVG fallback. Supports all 4 corner positions. |
 
 ### Slide patterns (`src/patterns/`)
 
@@ -270,62 +270,108 @@ git add src/assets/office && git commit -m "feat: add office photo assets"
 
 The Heart uses a branded polygon triangle network (`trojkaty.png`) as background decoration.
 It mirrors the geometric mesh of the logo: scattered low-opacity triangles with thin grey lines.
-Do **not** place it on every slide. Use it deliberately.
 
 **Asset:** `src/assets/trojkaty.png`
 **Raw URL (for Claude Design / no-install contexts):**
 `https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png`
 
-### When to use
+### Rule 1 — use selectively, not on every slide
 
-| Slide type | Triangles? | Notes |
+The artwork is atmosphere, not wallpaper. A deck where every slide has triangles in the same corner
+looks mechanical. Vary position and skip it on dense slides.
+
+### Rule 2 — pick position based on slide layout
+
+Read the slide's visual weight before choosing a corner. The artwork should occupy empty space,
+never compete with primary content.
+
+| Slide layout / content weight | Recommended position | Reasoning |
 |---|---|---|
-| Cover / title slide | Yes | Prominent, larger size (~320px), opacity ~0.20 |
-| Section dividers (full-bleed photo) | Optional | Low opacity (0.12–0.18) on dark overlay |
-| Standard content slides | Yes (default) | Via `SlideShell decorations` — top-right corner, opacity 0.35 |
-| Dense data / tables / matrices | No | Omit — adds visual clutter |
-| BigQuote (red background) | No | Red-on-red is invisible; skip |
+| Headline top-left, content below (most text slides) | `top-right` | Top-right is empty; artwork doesn't fight the headline |
+| Full-width headline, stats/columns centred | `bottom-right` | Bottom-right softens the footer zone |
+| Portrait photo or logo on the right | `top-left` or `bottom-left` | Balances the heavy right side |
+| Cover slide (logo top-left, tagline bottom-left) | `bottom-right` | Opposite corner from logo, creates diagonal tension |
+| Two-column layout (text left, visual right) | `top-right` or omit | Only if right column has breathing room at top |
+| Timeline or roadmap (horizontal, full-width) | `top-right` | Timeline sits mid/bottom; top-right is clear |
+| Quote or statement (centred text, minimal) | `bottom-left` | Grounds the composition without crowding the text |
+| Dense table / matrix / data-heavy | omit (`decorations={false}`) | Clutter kills readability |
+| BigQuote (red background) | omit | Red-on-red is invisible and adds nothing |
+| SectionDivider (full-bleed photo) | optional `bottom-right`, opacity 0.12 | Very subtle only; photo is the hero |
 
-### Usage via DecorativeCorner
+### Rule 3 — vary across the deck
+
+In a multi-slide sequence, rotate positions so the artwork feels alive, not stamped:
+- Slides 1–3: `top-right`
+- Slide 4 (section divider): omit or `bottom-right` at low opacity
+- Slides 5–7: `top-right` or `bottom-left` depending on layout
+- Never use the same position on four consecutive slides
+
+### Usage
 
 ```tsx
-// SlideShell handles it automatically — decorations prop (default: true)
-<SlideShell decorations>...</SlideShell>
-<SlideShell decorations={false}>...</SlideShell>  // suppress for dense data slides
+// SlideShell: position, opacity, and size are all controllable
+<SlideShell
+  decorations
+  decorationPosition="top-right"   // "top-right" | "top-left" | "bottom-right" | "bottom-left"
+  decorationOpacity={0.35}         // 0.12 (subtle) to 0.40 (present)
+  decorationSize={260}             // px; 220–320 typical
+>
+  ...
+</SlideShell>
 
-// Explicit placement anywhere
-<DecorativeCorner position="top-right" size={260} opacity={0.35} />
+// Turn off for dense data slides
+<SlideShell decorations={false}>...</SlideShell>
 
-// Cover: bottom-left variant, larger and softer
-<DecorativeCorner position="bottom-left" size={380} opacity={0.18} />
+// Direct component — for patterns that don't wrap SlideShell
+<DecorativeCorner position="bottom-left" size={320} opacity={0.20} />
 
-// Force SVG fallback (no image load — useful in SSR, email, or test environments)
-<DecorativeCorner variant="svg" position="top-right" size={260} />
+// SVG fallback (no image fetch)
+<DecorativeCorner variant="svg" position="top-right" />
 ```
 
 ### For Claude Design (inline without npm)
 
-Reference the PNG directly by CDN URL — no package install needed:
+Reference the PNG directly by CDN URL — no package install needed.
+Apply the CSS transform so the cluster anchors to the chosen corner:
 
 ```html
-<!-- top-right corner (most common) -->
+<!-- top-right (most common content slides) -->
 <img
   src="https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png"
-  style="position:absolute;top:0;right:0;width:280px;height:280px;opacity:0.35;transform:scale(-1,-1);transform-origin:center;pointer-events:none;"
+  style="position:absolute;top:0;right:0;width:270px;height:270px;opacity:0.35;
+         transform:scale(-1,-1);transform-origin:center;pointer-events:none;"
   aria-hidden alt=""
 />
 
-<!-- bottom-left corner (cover / darker mood) -->
+<!-- bottom-right -->
 <img
   src="https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png"
-  style="position:absolute;bottom:0;left:0;width:360px;height:360px;opacity:0.18;pointer-events:none;"
+  style="position:absolute;bottom:0;right:0;width:270px;height:270px;opacity:0.25;
+         transform:scaleX(-1);transform-origin:center;pointer-events:none;"
+  aria-hidden alt=""
+/>
+
+<!-- bottom-left (cover, quote) -->
+<img
+  src="https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png"
+  style="position:absolute;bottom:0;left:0;width:340px;height:340px;opacity:0.18;
+         pointer-events:none;"
+  aria-hidden alt=""
+/>
+
+<!-- top-left -->
+<img
+  src="https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png"
+  style="position:absolute;top:0;left:0;width:270px;height:270px;opacity:0.30;
+         transform:scaleY(-1);transform-origin:center;pointer-events:none;"
   aria-hidden alt=""
 />
 ```
 
 ### Transform reference
 
-The PNG's triangle cluster is in the **bottom-left** of the canvas. To anchor correctly:
+The PNG's triangle cluster sits in the **bottom-left** of the canvas.
+Flip axes to anchor it to each corner:
 
 | Corner | CSS transform |
 |---|---|
@@ -401,4 +447,6 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] If the screen mirrors a slide pattern, it wraps in `SlideShell`.
 - [ ] Photo dividers use `SectionDivider` with a `context` or explicit `photo` prop.
 - [ ] Decorative triangles use `<DecorativeCorner />` (or the CDN URL) — never ad-hoc shapes.
+- [ ] Triangle position chosen based on slide layout — not defaulted to top-right blindly.
 - [ ] Dense data slides (`decorations={false}`) don't carry the triangle artwork.
+- [ ] No four consecutive slides with triangles in the same corner.
