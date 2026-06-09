@@ -382,6 +382,46 @@ Flip axes to anchor it to each corner:
 
 ---
 
+## Content density limits
+
+Every slide communicates **one idea**. Overloaded slides force the presenter to read aloud.
+These are hard maximums — if content does not fit, split into two slides.
+
+| Slide / Pattern | Maximum content |
+|---|---|
+| `Cover` | 1 headline + 1 subtitle + optional tagline (≤ 12 words each) |
+| `SectionDivider` | 1 headline + optional accent word + 1 subtitle (≤ 15 words) |
+| `BigQuote` | 1 quote + 1 attribution — nothing else |
+| `Problem3Col` | 3 columns; each: 1 stat + 1 label + 2–3 lines of supporting text |
+| `OKRBoard` | 1 objective + 3 key results max |
+| `SWOTGrid` | 4 quadrants; 3–5 bullets per quadrant |
+| `Roadmap` | 5–7 milestones; label ≤ 5 words each |
+| `CompetitiveMatrix` | 4 competitors × 8 features max |
+| `CustomerJourney` | 5–7 steps; label ≤ 6 words each |
+| `WeeklyStatus` | 6 workstreams max |
+| `BeforeAfter` | 1 state each side; 2–3 bullets or 1 visual |
+| `ValueProp` | 2 segments; each: 1 pain + 1 gain + 2–3 bullets |
+| Generic content (`SlideShell`) | 1 heading + **4–6 bullets** OR 2 short paragraphs OR ≤ 6 `KPITile` |
+| People grid (`PersonCard`) | 4 cards per slide max |
+| Stats hero (`BigStat`) | 1–3 stats per slide |
+
+### Copy rules
+
+- **Headlines**: ≤ 10 words. Active voice. No question marks.
+- **Bullets**: ≤ 10 words per bullet. Start with a noun or verb. No full sentences ending in a period.
+- **Subtitles / supporting text**: ≤ 20 words. One idea only.
+- **Labels** (pill, badge, eyebrow): ≤ 3 words.
+- **Numbers**: always include units (%, PLN, ×, k, M); use space as thousands separator (`1 200`, not `1200`).
+
+### Split triggers — create a second slide when
+
+- More than 6 bullets are needed to cover the topic
+- Two distinct ideas could each stand alone as a message
+- A table and a visual appear on the same slide
+- The presenter would need to reference the same slide for more than 90 seconds
+
+---
+
 ## Decision tree — which pattern fits the brief?
 
 | Brief | Pattern |
