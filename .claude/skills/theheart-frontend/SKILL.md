@@ -19,7 +19,7 @@ Two repos, two roles:
 
 | Repo | Role |
 |---|---|
-| **theheart-design-system** — https://github.com/wojtekczuba/theheart-design-system | The canonical React + Tailwind design system. `tokens.json`, `tailwind.preset.cjs`, `src/tokens/tokens.css`, `src/components/`, `src/patterns/`, `src/icons/`, `src/logos/`. Pull from here. |
+| **theheart-design-system** — https://github.com/wojtekczuba/theheart-design-system | The canonical React + Tailwind design system. `tokens.json`, `tailwind.preset.cjs`, `src/tokens/tokens.css`, `src/components/`, `src/patterns/`, `src/icons/`, `src/logos/`, `src/assets/`. Pull from here. |
 | **The-Heart-Vibe/claude-code-marketplace** (`plugins/pptx-generator`) | Source plugin that *generates* the design system. Edit `brand.yaml` and widgets here, then re-export. |
 
 The instructional brand toolkit (Pitch Deck Toolkit) is the
@@ -146,7 +146,7 @@ in-progress badge breaks the guideline.
 | `Divider` | Thin horizontal line. |
 | `SectionLabel` | Small uppercase red eyebrow for section headers. |
 | `BrandFooter` | "The Heart. All rights reserved." + page number. Wired into `SlideShell`. |
-| `DecorativeCorner` | Abstract grey triangles + dotted lines for slide corners. |
+| `DecorativeCorner` | Branded polygon triangle network for slide corners. Default `variant="image"` uses `trojkaty.png`; `variant="svg"` for inline SVG fallback. |
 
 ### Slide patterns (`src/patterns/`)
 
@@ -266,6 +266,76 @@ git add src/assets/office && git commit -m "feat: add office photo assets"
 
 ---
 
+## Decorative triangle artwork
+
+The Heart uses a branded polygon triangle network (`trojkaty.png`) as background decoration.
+It mirrors the geometric mesh of the logo: scattered low-opacity triangles with thin grey lines.
+Do **not** place it on every slide. Use it deliberately.
+
+**Asset:** `src/assets/trojkaty.png`
+**Raw URL (for Claude Design / no-install contexts):**
+`https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png`
+
+### When to use
+
+| Slide type | Triangles? | Notes |
+|---|---|---|
+| Cover / title slide | Yes | Prominent, larger size (~320px), opacity ~0.20 |
+| Section dividers (full-bleed photo) | Optional | Low opacity (0.12–0.18) on dark overlay |
+| Standard content slides | Yes (default) | Via `SlideShell decorations` — top-right corner, opacity 0.35 |
+| Dense data / tables / matrices | No | Omit — adds visual clutter |
+| BigQuote (red background) | No | Red-on-red is invisible; skip |
+
+### Usage via DecorativeCorner
+
+```tsx
+// SlideShell handles it automatically — decorations prop (default: true)
+<SlideShell decorations>...</SlideShell>
+<SlideShell decorations={false}>...</SlideShell>  // suppress for dense data slides
+
+// Explicit placement anywhere
+<DecorativeCorner position="top-right" size={260} opacity={0.35} />
+
+// Cover: bottom-left variant, larger and softer
+<DecorativeCorner position="bottom-left" size={380} opacity={0.18} />
+
+// Force SVG fallback (no image load — useful in SSR, email, or test environments)
+<DecorativeCorner variant="svg" position="top-right" size={260} />
+```
+
+### For Claude Design (inline without npm)
+
+Reference the PNG directly by CDN URL — no package install needed:
+
+```html
+<!-- top-right corner (most common) -->
+<img
+  src="https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png"
+  style="position:absolute;top:0;right:0;width:280px;height:280px;opacity:0.35;transform:scale(-1,-1);transform-origin:center;pointer-events:none;"
+  aria-hidden alt=""
+/>
+
+<!-- bottom-left corner (cover / darker mood) -->
+<img
+  src="https://raw.githubusercontent.com/wojtekczuba/theheart-design-system/main/src/assets/trojkaty.png"
+  style="position:absolute;bottom:0;left:0;width:360px;height:360px;opacity:0.18;pointer-events:none;"
+  aria-hidden alt=""
+/>
+```
+
+### Transform reference
+
+The PNG's triangle cluster is in the **bottom-left** of the canvas. To anchor correctly:
+
+| Corner | CSS transform |
+|---|---|
+| `top-right` | `scale(-1,-1)` |
+| `top-left` | `scaleY(-1)` |
+| `bottom-right` | `scaleX(-1)` |
+| `bottom-left` | none |
+
+---
+
 ## Decision tree — which pattern fits the brief?
 
 | Brief | Pattern |
@@ -330,3 +400,5 @@ When in doubt, mirror what Showcase does for a similar shape.
 - [ ] Logo is rendered via `<Logo/>`, not as a free `<img>`.
 - [ ] If the screen mirrors a slide pattern, it wraps in `SlideShell`.
 - [ ] Photo dividers use `SectionDivider` with a `context` or explicit `photo` prop.
+- [ ] Decorative triangles use `<DecorativeCorner />` (or the CDN URL) — never ad-hoc shapes.
+- [ ] Dense data slides (`decorations={false}`) don't carry the triangle artwork.
