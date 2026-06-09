@@ -1,50 +1,113 @@
-/* Auto-generated from brand.yaml — DO NOT EDIT BY HAND. */
+/* The Heart Design System — CSS tokens
+ * Single source of truth for colour, typography, spacing, and elevation.
+ * Mirrors tokens.json and tailwind.preset.cjs.
+ *
+ * COLOUR RULES (break easily — read them):
+ *  · #E61B25 brand red dominates: headlines, CTAs, decorative bars, key pills.
+ *  · #0056A4 blue is "accent if needed" — use rarely, NEVER for status.
+ *  · Status in-progress renders BLACK, not blue.
+ */
 
-/* Raleway — 3 weights; weight differentiation via font-weight utilities in components */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap");
 
 :root {
-  /* Colour — main palette */
-  --th-color-primary: #E61B25;
-  --th-color-black: #000000;
-  --th-color-green: #13A538;
+  /* ── Brand / main palette ──────────────────────────── */
+  --th-color-primary:    #E61B25;   /* The Heart signature red */
+  --th-color-black:      #000000;   /* primary text */
+  --th-color-green:      #13A538;   /* positive / done */
   --th-color-background: #FFFFFF;
 
-  /* Colour — accents (use sparingly) */
-  --th-color-blue: #0056A4;
-  --th-color-red-light: #E9787E;
+  /* ── Accents — use sparingly ───────────────────────── */
+  --th-color-blue:       #0056A4;   /* accent if needed; NEVER for status */
+  --th-color-red-light:  #E9787E;   /* warning / at-risk / soft red */
 
-  /* Colour — neutrals */
-  --th-color-gray-1: #969696;
-  --th-color-gray-2: #E6E6E6;
-  --th-color-gray-3: #F0F0F0;
+  /* ── Neutrals ──────────────────────────────────────── */
+  --th-color-gray-1:     #969696;   /* secondary text, captions */
+  --th-color-gray-2:     #E6E6E6;   /* borders, dividers */
+  --th-color-gray-3:     #F0F0F0;   /* subtle surfaces, hover states */
 
-  /* Status colours */
-  --th-color-status-done: #13A538;
-  --th-color-status-in-progress: #000000;
-  --th-color-status-at-risk: #E9787E;
-  --th-color-status-blocked: #E61B25;
-  --th-color-status-planned: #969696;
+  /* ── Status palette (fixed & intentional) ──────────── */
+  --th-color-status-done:        #13A538;
+  --th-color-status-on-track:    #13A538;
+  --th-color-status-in-progress: #000000;   /* BLACK — never blue */
+  --th-color-status-at-risk:     #E9787E;
+  --th-color-status-blocked:     #E61B25;
+  --th-color-status-off-track:   #E61B25;
+  --th-color-status-planned:     #969696;
 
-  /* Typography — all three use "Raleway"; weight is set via font-weight utilities */
-  --th-font-heading: "Raleway", Arial, sans-serif;
-  --th-font-body: "Raleway", Arial, sans-serif;
-  --th-font-light: "Raleway", Arial, sans-serif;
+  /* ── Semantic text aliases ─────────────────────────── */
+  --th-text-strong:    var(--th-color-black);
+  --th-text-body:      var(--th-color-black);
+  --th-text-muted:     var(--th-color-gray-1);
+  --th-text-accent:    var(--th-color-primary);
+  --th-text-on-dark:   #FFFFFF;
 
-  /* Font sizes (px) */
-  --th-text-title: 36px;
-  --th-text-h1: 28px;
-  --th-text-h2: 20px;
-  --th-text-section: 12px;
-  --th-text-body: 14px;
-  --th-text-supporting: 12px;
-  --th-text-caption: 10px;
+  /* ── Semantic surface aliases ──────────────────────── */
+  --th-surface:        var(--th-color-background);
+  --th-surface-subtle: var(--th-color-gray-3);
+  --th-surface-dark:   var(--th-color-black);
 
-  /* Spacing */
-  --th-radius-sm: 4px;
-  --th-radius-md: 8px;
-  --th-radius-lg: 12px;
+  /* ── Semantic border aliases ───────────────────────── */
+  --th-border:         var(--th-color-gray-2);
+  --th-border-strong:  var(--th-color-gray-1);
+
+  /* ── Accent aliases ────────────────────────────────── */
+  --th-accent:         var(--th-color-primary);
+  --th-accent-soft:    var(--th-color-red-light);
+
+  /* ── Typography — Raleway, 3 weights ───────────────── */
+  --th-font-heading:  "Raleway", Arial, sans-serif;
+  --th-font-body:     "Raleway", Arial, sans-serif;
+  --th-font-light:    "Raleway", Arial, sans-serif;
+
+  --th-weight-light:    300;
+  --th-weight-regular:  400;
+  --th-weight-medium:   500;
+  --th-weight-semibold: 600;
+  --th-weight-bold:     700;
+
+  /* Size scale — canonical deck hierarchy */
+  --th-text-title:      36px;   /* cover / hero titles */
+  --th-text-h1:         28px;   /* slide headlines */
+  --th-text-h2:         20px;   /* sub-heads */
+  --th-text-body-size:  14px;   /* default body */
+  --th-text-section:    12px;   /* section eyebrow */
+  --th-text-supporting: 12px;   /* supporting text on cards */
+  --th-text-caption:    10px;   /* footnotes, page numbers */
+
+  --th-leading-title: 1.1;
+  --th-leading-h1:    1.2;
+  --th-leading-h2:    1.3;
+  --th-leading-body:  1.5;
+  --th-leading-tight: 1.08;
+
+  --th-tracking-eyebrow: 0.12em;
+
+  /* ── Spacing scale ─────────────────────────────────── */
+  --th-space-1:  4px;
+  --th-space-2:  8px;
+  --th-space-3:  12px;
+  --th-space-4:  16px;
+  --th-space-5:  24px;
+  --th-space-6:  32px;
+  --th-space-7:  48px;
+  --th-space-8:  64px;
+
+  /* Slide margins per brand guideline */
+  --th-slide-margin-h: 8%;
+  --th-slide-margin-v: 8%;
+
+  /* ── Radii ─────────────────────────────────────────── */
+  --th-radius-sm:   4px;
+  --th-radius-md:   8px;
+  --th-radius-lg:   12px;
+  --th-radius-pill: 999px;
+
+  /* ── Slide chrome ──────────────────────────────────── */
+  --th-bar: 6px;   /* left rail + bottom accent bar thickness */
+
+  /* ── Elevation — restrained (corporate / VC brand) ─── */
+  --th-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --th-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --th-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
-
-body { font-family: var(--th-font-body); color: var(--th-color-black); }
-h1, h2, h3, h4, h5 { font-family: var(--th-font-heading); }
